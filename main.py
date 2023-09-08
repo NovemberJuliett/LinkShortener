@@ -8,24 +8,22 @@ def shorten_link(token, url):
 
     url = "https://api-ssl.bitly.com/v4/shorten"
     headers = {
-        "Authorization": "734f9ab8129ff9477ad1a2d86d4bdab5270e30cf",
+        "Authorization": "17c09e22ad155405159ca1977542fecf00231da7",
         "Content-Type": "application/json",
     }
-    data = {"long_url": f"{user_input}", "domain": "bit.ly"}
+    data = {'long_url': user_input, "domain": "bit.ly"}
     response = requests.post(url, headers=headers, data=json.dumps(data))
     response.raise_for_status()
     short_link = response.json()
     return short_link['link']
 
 
-print('Битлинк', shorten_link("734f9ab8129ff9477ad1a2d86d4bdab5270e30cf", user_input))
-
 try:
-    bitlink = shorten_link("734f9ab8129ff9477ad1a2d86d4bdab5270e30cf", user_input)
-    print("Все хорошо")
+    bitlink = shorten_link("17c09e22ad155405159ca1977542fecf00231da7", user_input)
 except requests.exceptions.HTTPError as error:
-    # exit("Can't get data from server:\n{0}".format(error))
-    print("Все плохо")
+    exit("Can't get data from server:\n{0}".format(error))
+print(bitlink)
+
 
 
 

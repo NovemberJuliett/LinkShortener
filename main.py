@@ -4,6 +4,7 @@ import urllib.parse
 from urllib.parse import urlparse
 
 user_input = input('Введите ссылку: ')
+token = "17c09e22ad155405159ca1977542fecf00231da7"
 
 
 def shorten_link(token, url):
@@ -21,7 +22,7 @@ def shorten_link(token, url):
 
 
 try:
-    bitlink = shorten_link("17c09e22ad155405159ca1977542fecf00231da7", user_input)
+    bitlink = shorten_link(token, user_input)
 except requests.exceptions.HTTPError as error:
     exit("Can't get data from server:\n{0}".format(error))
 # print(bitlink)
@@ -30,7 +31,7 @@ except requests.exceptions.HTTPError as error:
 def count_clicks(url):
 
     headers = {
-        "Authorization": "17c09e22ad155405159ca1977542fecf00231da7"
+        "Authorization": token
     }
 
     params = (
@@ -40,7 +41,8 @@ def count_clicks(url):
     parsed_link = urlparse(url)
     netloc = parsed_link.netloc
     path = parsed_link.path
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{netloc}{path}/clicks/summary", headers=headers, params=params)
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{netloc}{path}/clicks/summary",
+                            headers=headers, params=params)
     response.raise_for_status()
     click_link = response.json()
     return click_link['total_clicks']
@@ -53,25 +55,48 @@ except requests.exceptions.HTTPError as error:
 # print(check_clicks)
 
 
-def is_bitlink(user_input):
-    headers = {
-        'Authorization': "17c09e22ad155405159ca1977542fecf00231da7",
-    }
-
-    response = requests.get('https://api-ssl.bitly.com/v4/bitlinks/{bitlink}', headers=headers)
-    parsed_link = urlparse(user_input)
+def is_bitlink(url):
+    parsed_link = urlparse(url)
     netloc = parsed_link.netloc
-    path = parsed_link.path
-    print(netloc)
-
-    link, long url (bitlink info)
     if netloc == 'bit.ly':
-        print(check_clicks)
+        return True
     else:
-        print(bitlink)
+        return False
 
-count_clicks(bitlink)
-is_bitlink(user_input)
+
+user_link = is_bitlink(user_input)
+if user_link is True:
+    print(check_clicks)
+elif user_link is False:
+    print(bitlink)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#     headers = {
+#         'Authorization': "17c09e22ad155405159ca1977542fecf00231da7",
+#     }
+#
+#     parsed_link = urlparse(url)
+#     netloc = parsed_link.netloc
+#     path = parsed_link.path
+#     print(netloc)
+#     print(path)
+#     response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{netloc}{path}", headers=headers)
+#     response.raise_for_status()
+#     bitlink_info = response.json()
+
+
 
 
 

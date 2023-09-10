@@ -1,14 +1,9 @@
 import requests
 import json
-import urllib.parse
 from urllib.parse import urlparse
-
-user_input = input('Введите ссылку: ')
-token = "17c09e22ad155405159ca1977542fecf00231da7"
 
 
 def shorten_link(token, url):
-
     bitly_url = "https://api-ssl.bitly.com/v4/shorten"
     headers = {
         "Authorization": token,
@@ -21,15 +16,7 @@ def shorten_link(token, url):
     return short_link['link']
 
 
-try:
-    bitlink = shorten_link(token, user_input)
-except requests.exceptions.HTTPError as error:
-    exit("Can't get data from server:\n{0}".format(error))
-# print(bitlink)
-
-
 def count_clicks(url):
-
     headers = {
         "Authorization": token
     }
@@ -48,13 +35,6 @@ def count_clicks(url):
     return click_link['total_clicks']
 
 
-try:
-    check_clicks = count_clicks(bitlink)
-except requests.exceptions.HTTPError as error:
-    exit("Can't get data from server:\n{0}".format(error))
-# print(check_clicks)
-
-
 def is_bitlink(url):
     parsed_link = urlparse(url)
     netloc = parsed_link.netloc
@@ -64,11 +44,22 @@ def is_bitlink(url):
         return False
 
 
-user_link = is_bitlink(user_input)
-if user_link is True:
+user_input = input('Введите ссылку: ')
+token = "17c09e22ad155405159ca1977542fecf00231da7"
+link_is_bitlink = is_bitlink(user_input)
+if link_is_bitlink  is True:
+    check_clicks = count_clicks(user_input)
     print(check_clicks)
-elif user_link is False:
+elif link_is_bitlink  is False:
+    bitlink = shorten_link(token, user_input)
     print(bitlink)
+
+
+
+
+
+
+
 
 
 

@@ -1,12 +1,17 @@
 import requests
 import json
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+your_token = os.environ["TOKEN"]
 
 
 def shorten_link(token, url):
     bitly_url = "https://api-ssl.bitly.com/v4/shorten"
     headers = {
-        "Authorization": token,
+        "Authorization": your_token,
         "Content-Type": "application/json",
     }
     data = {'long_url': url, "domain": "bit.ly"}
@@ -18,7 +23,7 @@ def shorten_link(token, url):
 
 def count_clicks(url):
     headers = {
-        "Authorization": token
+        "Authorization": your_token
     }
 
     params = (
@@ -44,56 +49,26 @@ def is_bitlink(url):
         return False
 
 
-user_input = input('Введите ссылку: ')
-token = "17c09e22ad155405159ca1977542fecf00231da7"
-link_is_bitlink = is_bitlink(user_input)
-if link_is_bitlink is True:
-    try:
-        check_clicks = count_clicks(user_input)
-        print(check_clicks)
-    except requests.exceptions.HTTPError:
-        print("Can't reach this link")
+def main():
+    user_input = input('Введите ссылку: ')
+    link_is_bitlink = is_bitlink(user_input)
+    if link_is_bitlink is True:
+        try:
+            check_clicks = count_clicks(user_input)
+            print(check_clicks)
+        except requests.exceptions.HTTPError as error:
+            exit("Can't get data from server:\n{0}".format(error))
 
-elif link_is_bitlink is False:
-    try:
-        bitlink = shorten_link(token, user_input)
-        print(bitlink)
-    except requests.exceptions.HTTPError:
-        print("Can't reach this link")
-
-
+    elif link_is_bitlink is False:
+        try:
+            bitlink = shorten_link(your_token, user_input)
+            print(bitlink)
+        except requests.exceptions.HTTPError as error:
+            exit("Can't get data from server:\n{0}".format(error))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#     headers = {
-#         'Authorization': "17c09e22ad155405159ca1977542fecf00231da7",
-#     }
-#
-#     parsed_link = urlparse(url)
-#     netloc = parsed_link.netloc
-#     path = parsed_link.path
-#     print(netloc)
-#     print(path)
-#     response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{netloc}{path}", headers=headers)
-#     response.raise_for_status()
-#     bitlink_info = response.json()
+if __name__ == '__main__':
+    main()
 
 
 

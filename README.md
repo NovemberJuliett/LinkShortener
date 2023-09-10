@@ -5,8 +5,7 @@ This code helps shorten your links using the bit.ly service right from the termi
 
 Python3 should already be installed. Use pip (or pip3, if there is a conflict with Python2) to install dependencies:
 
-```pip install requests```
-```pip install python-dotenv```
+```pip install requests, python-dotenv```
 
 ## How to use
 

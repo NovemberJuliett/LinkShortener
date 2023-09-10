@@ -33,7 +33,8 @@ def count_clicks(url):
     parsed_link = urlparse(url)
     netloc = parsed_link.netloc
     path = parsed_link.path
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{netloc}{path}/clicks/summary",
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{netloc}"
+                            f"{path}/clicks/summary",
                             headers=headers, params=params)
     response.raise_for_status()
     click_link = response.json()
@@ -69,10 +70,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-

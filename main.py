@@ -47,12 +47,20 @@ def is_bitlink(url):
 user_input = input('Введите ссылку: ')
 token = "17c09e22ad155405159ca1977542fecf00231da7"
 link_is_bitlink = is_bitlink(user_input)
-if link_is_bitlink  is True:
-    check_clicks = count_clicks(user_input)
-    print(check_clicks)
-elif link_is_bitlink  is False:
-    bitlink = shorten_link(token, user_input)
-    print(bitlink)
+if link_is_bitlink is True:
+    try:
+        check_clicks = count_clicks(user_input)
+        print(check_clicks)
+    except requests.exceptions.HTTPError:
+        print("Can't reach this link")
+
+elif link_is_bitlink is False:
+    try:
+        bitlink = shorten_link(token, user_input)
+        print(bitlink)
+    except requests.exceptions.HTTPError:
+        print("Can't reach this link")
+
 
 
 

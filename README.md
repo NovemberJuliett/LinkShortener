@@ -3,9 +3,10 @@
 This code helps shorten your links using the bit.ly service right from the terminal. Additionally, this code helps count clicks on your short links.
 ## How to install
 
-Python3 should already be installed. Use pip (or pip3, if there is a conflict with Python2) to install dependencies:
-```python 
-pip install requests, python-dotenv
+Python3 should already be installed. To install all project packages at once, use the following command in terminal:
+
+```python
+pip install -r requirements.txt
 ```
 
 Then you should install enviroment variables:
@@ -42,8 +43,3 @@ Open a new terminal window and use the following command:
 
 ```python main.py```
 
-To install all project packages at once, use the following command in terminal:
-
-```python
-pip install -r requirements.txt
-```

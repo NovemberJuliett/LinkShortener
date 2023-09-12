@@ -9,12 +9,6 @@ Python3 should already be installed. To install all project packages at once, us
 pip install -r requirements.txt
 ```
 
-Then you should install enviroment variables:
-
-```python
-pip install python-dotenv
-```
-
 After this create an .env file in your project directory (or in the root of your project) and store your sensitive information in this file. For example, you have an API token called NEW_TOKEN (you could receive yours from bit.ly site). Replace "your_api_token_here" with your actual API token.
 ```python 
 NEW_TOKEN=your_api_token_here

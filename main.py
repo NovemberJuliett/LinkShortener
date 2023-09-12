@@ -1,29 +1,25 @@
 import requests
-import json
 from urllib.parse import urlparse
 from dotenv import load_dotenv
 import os
-
-load_dotenv()
-your_token = os.environ["TOKEN"]
 
 
 def shorten_link(token, url):
     bitly_url = "https://api-ssl.bitly.com/v4/shorten"
     headers = {
-        "Authorization": your_token,
+        "Authorization": token,
         "Content-Type": "application/json",
     }
-    data = {'long_url': url, "domain": "bit.ly"}
-    response = requests.post(bitly_url, headers=headers, data=json.dumps(data))
+    long_url = {'long_url': url, "domain": "bit.ly"}
+    response = requests.post(bitly_url, headers=headers, json=long_url)
     response.raise_for_status()
     short_link = response.json()
     return short_link['link']
 
 
-def count_clicks(url):
+def count_clicks(url, token):
     headers = {
-        "Authorization": your_token
+        "Authorization": token
     }
 
     params = (
@@ -51,6 +47,8 @@ def is_bitlink(url):
 
 
 def main():
+    load_dotenv()
+    user_token = os.environ["BITLY_TOKEN"]
     user_input = input('Введите ссылку: ')
     link_is_bitlink = is_bitlink(user_input)
     if link_is_bitlink is True:
@@ -62,7 +60,7 @@ def main():
 
     elif link_is_bitlink is False:
         try:
-            bitlink = shorten_link(your_token, user_input)
+            bitlink = shorten_link(user_token, user_input)
             print(bitlink)
         except requests.exceptions.HTTPError as error:
             exit("Can't get data from server:\n{0}".format(error))

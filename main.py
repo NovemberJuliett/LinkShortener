@@ -1,5 +1,5 @@
 import requests
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 from dotenv import load_dotenv
 import os
 
@@ -37,12 +37,13 @@ def count_clicks(url, token):
     return click_link['total_clicks']
 
 
-def is_bitlink(bitlink, token):
+def is_bitlink(url, token):
     headers = {
         "Authorization": token
     }
-
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}", headers=headers)
+    parsed_url = urlparse(url)
+    new_bitlink = parsed_url.hostname + parsed_url.path
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{new_bitlink}", headers=headers)
     if response.ok:
         return True
     else:
@@ -53,15 +54,15 @@ def main():
     load_dotenv()
     user_token = os.environ["BITLY_TOKEN"]
     user_input = input('Введите ссылку: ')
-    link_is_bitlink = is_bitlink(user_input, user_token)
-    if link_is_bitlink is True:
+    is_bitlink(user_input, user_token)
+    if is_bitlink:
         try:
-            check_clicks = count_clicks(user_input)
+            check_clicks = count_clicks(user_input, user_token)
             print(check_clicks)
         except requests.exceptions.HTTPError as error:
             exit("Can't get data from server:\n{0}".format(error))
 
-    elif link_is_bitlink is False:
+    elif is_bitlink is False:
         try:
             bitlink = shorten_link(user_token, user_input)
             print(bitlink)

@@ -10,7 +10,7 @@ def shorten_link(token, url):
         "Authorization": token,
         "Content-Type": "application/json",
     }
-    long_url = {'long_url': url, "domain": "bit.ly"}
+    long_url = {'long_url': url}
     response = requests.post(bitly_url, headers=headers, json=long_url)
     response.raise_for_status()
     short_link = response.json()
@@ -37,10 +37,13 @@ def count_clicks(url, token):
     return click_link['total_clicks']
 
 
-def is_bitlink(url):
-    parsed_link = urlparse(url)
-    netloc = parsed_link.netloc
-    if netloc == 'bit.ly':
+def is_bitlink(bitlink, token):
+    headers = {
+        "Authorization": token
+    }
+
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}", headers=headers)
+    if response.ok:
         return True
     else:
         return False
@@ -50,7 +53,7 @@ def main():
     load_dotenv()
     user_token = os.environ["BITLY_TOKEN"]
     user_input = input('Введите ссылку: ')
-    link_is_bitlink = is_bitlink(user_input)
+    link_is_bitlink = is_bitlink(user_input, user_token)
     if link_is_bitlink is True:
         try:
             check_clicks = count_clicks(user_input)

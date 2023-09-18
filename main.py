@@ -31,8 +31,8 @@ def count_clicks(url, token):
                             f"{parsed_link.path}/clicks/summary",
                             headers=headers, params=params)
     response.raise_for_status()
-    click_link = response.json()
-    return click_link['total_clicks']
+    get_clicks = response.json()
+    return get_clicks['total_clicks']
 
 
 def is_bitlink(url, token):
@@ -40,12 +40,9 @@ def is_bitlink(url, token):
         "Authorization": token
     }
     parsed_url = urlparse(url)
-    new_bitlink = parsed_url.hostname + parsed_url.path
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{new_bitlink}", headers=headers)
-    if response.ok:
-        return True
-    else:
-        return False
+    parsed_bitlink = "{}{}".format(parsed_url.hostname, parsed_url.path)
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{parsed_bitlink}", headers=headers)
+    return response.ok
 
 
 def main():

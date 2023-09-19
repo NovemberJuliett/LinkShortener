@@ -7,8 +7,7 @@ import os
 def shorten_link(token, url):
     bitly_url = "https://api-ssl.bitly.com/v4/shorten"
     headers = {
-        "Authorization": token,
-        "Content-Type": "application/json",
+        "Authorization": token
     }
     long_url = {'long_url': url}
     response = requests.post(bitly_url, headers=headers, json=long_url)
@@ -31,8 +30,8 @@ def count_clicks(url, token):
                             f"{parsed_link.path}/clicks/summary",
                             headers=headers, params=params)
     response.raise_for_status()
-    get_clicks = response.json()
-    return get_clicks['total_clicks']
+    clicks_count = response.json()
+    return clicks_count['total_clicks']
 
 
 def is_bitlink(url, token):

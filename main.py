@@ -2,6 +2,7 @@ import requests
 from urllib.parse import urlparse, urlunparse
 from dotenv import load_dotenv
 import os
+import argparse
 
 
 def shorten_link(token, url):
@@ -47,17 +48,20 @@ def is_bitlink(url, token):
 def main():
     load_dotenv()
     user_token = os.environ["BITLY_TOKEN"]
-    user_input = input('Введите ссылку: ')
-    if is_bitlink(user_input, user_token):
+    user_input = argparse.ArgumentParser()
+    user_input.add_argument('link')
+    args = user_input.parse_args()
+    user_link = args.link
+    if is_bitlink(user_link, user_token):
         try:
-            check_clicks = count_clicks(user_input, user_token)
+            check_clicks = count_clicks(user_link, user_token)
             print(check_clicks)
         except requests.exceptions.HTTPError as error:
             print("Can't get data from server:\n{0}".format(error))
 
     else:
         try:
-            bitlink = shorten_link(user_token, user_input)
+            bitlink = shorten_link(user_token, user_link)
             print(bitlink)
         except requests.exceptions.HTTPError as error:
             print("Can't get data from server:\n{0}".format(error))

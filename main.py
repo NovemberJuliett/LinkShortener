@@ -51,17 +51,16 @@ def main():
     user_input = argparse.ArgumentParser()
     user_input.add_argument('link')
     args = user_input.parse_args()
-    user_link = args.link
-    if is_bitlink(user_link, user_token):
+    if is_bitlink(args.link, user_token):
         try:
-            check_clicks = count_clicks(user_link, user_token)
+            check_clicks = count_clicks(args.link, user_token)
             print(check_clicks)
         except requests.exceptions.HTTPError as error:
             print("Can't get data from server:\n{0}".format(error))
 
     else:
         try:
-            bitlink = shorten_link(user_token, user_link)
+            bitlink = shorten_link(user_token, args.link)
             print(bitlink)
         except requests.exceptions.HTTPError as error:
             print("Can't get data from server:\n{0}".format(error))

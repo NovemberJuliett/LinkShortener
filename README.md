@@ -15,30 +15,19 @@ pip install -r requirements.txt
 ## Environment variables
 
 Create an .env file in your project directory (or in the root of your project) and store your sensitive information in it, using API token.
-```python 
-BITLY_TOKEN=your_api_token_here
-```
+
 ### How to get
-Import the load_dotenv function from the dotenv library:
+
+Open this [link](https://dev.bitly.com/) and get your API token following the instructions from Bitly.
+
+Put your token into the .env file and assign its value to the new environment variable. For example:
+
 ```python 
-from dotenv import load_dotenv
-```
-
-Call the load_dotenv() function to load the environment variables from the .env file into your Python environment:
-
-```python
-load_dotenv()
-```
-Now you can access your environment variables using os.environ:
-```python
-import os
-
-token = os.environ.get("NEW_TOKEN")
+BITLY_TOKEN = "your_api_token_here"
 ```
 
 ## Run
 
-Open a new terminal window and use the following command:
+Open a new terminal window and run the script. Put the link you want to shorten or check right after the run command. For example:
 
-```python main.py```
-
+```python main.py https://dvmn.org```

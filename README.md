@@ -23,7 +23,7 @@ Open this [link](https://dev.bitly.com/) and get your API token following the in
 Put your token into the .env file and assign its value to the new environment variable. For example:
 
 ```python 
-BITLY_TOKEN = "your_api_token_here"
+BITLY_TOKEN="your_api_token_here"
 ```
 
 ## Run
